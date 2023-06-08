@@ -1,0 +1,70 @@
+create extension unaccent;
+
+
+Create table Pessoas (
+	id Serial primary key ,
+	primeiro_nome varchar (255),
+	segundo_nome varchar (255)
+)
+
+INSERT INTO Pessoas (primeiro_nome, segundo_nome)
+VALUES 
+    ('João', 'Silva'),
+    ('Maria', 'Santos'),
+    ('Pedro', 'Almeida'),
+    ('Ana', 'Oliveira'),
+    ('Lucas', 'Costa'),
+    ('Carla', 'Pereira'),
+    ('Bruno', 'Rodrigues'),
+    ('Sofia', 'Ferreira'),
+    ('Gabriel', 'Gomes'),
+    ('Isabella', 'Ramos');
+
+
+
+
+Select pessoas.id,CONCAT(pessoas.primeiro_nome,' ', pessoas.segundo_nome) as NOMES_COMPLETOS
+from pessoas
+
+
+Select pessoas.id,Upper(CONCAT(pessoas.primeiro_nome,' ', pessoas.segundo_nome)) as NOMES_COMPLETOS
+from pessoas
+
+alter table pessoas
+add column email_pessoas varchar (225)
+
+
+ update pessoas
+ Set email_pessoas = unaccent(Upper(Concat(pessoas.primeiro_nome, '.', pessoas.segundo_nome,'@teste.com')))
+ 
+ Select pessoas.id, trim(both '.COM'from pessoas.email_pessoas)as "EMAIL_ATUALIZADO" 
+ from pessoas
+
+alter table pessoas
+add column DATA_NASCIMENTO date
+
+UPDATE pessoas
+SET data_nascimento = '1800-01-01'::DATE + (random() * ('2022-01-01'::DATE - '1800-01-01'::DATE))::INTEGER;
+
+select pessoas.id,Concat(pessoas.primeiro_nome, ' ', pessoas.segundo_nome),
+pessoas.data_nascimento, extract(year from age(pessoas.data_nascimento)) as "IDADE"
+from pessoas
+
+alter table pessoas
+add column IDADE int
+
+update pessoas
+set idade = extract(year from age(pessoas.data_nascimento))
+
+
+select TO_char(Now(), 'DD-FMMonth-YYYY')
+
+select To_char(212.3, '999D99') as valor
+
+
+create view vw_pessoas as select pessoas.id,pessoas.primeiro_nome,pessoas.idade from pessoas
+
+select * from vw_pessoas
+ 
+select * from Pessoas
+
